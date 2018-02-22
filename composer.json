@@ -11,7 +11,8 @@
   ],
   "require": {
     "php": ">=5.5.9",
-    "sintattica/atk": "9.0.x-dev"
+    "sintattica/atk": "9.0.x-dev",
+    "fedeherrera10/atk-attribute-cbu": "@dev"
   },
  "autoload": {
     "psr-4": {"Sintattica\\Atk\\": "src/"}
