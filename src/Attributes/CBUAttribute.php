@@ -59,13 +59,13 @@ class CBUAttribute extends Attribute
         $strvalue = Tools::atkArrayNvl($record, $this->fieldName(), '');
         if ($strvalue != '' && $strvalue != '...') {
             if (!$this::isValidCBU($strvalue)) {
-                Tools::triggerError($record, $this->fieldName(), 'CUIT No v&aacute;lido');
+                Tools::triggerError($record, $this->fieldName(), 'CBU No v&aacute;lido');
             }
         }
         parent::validate($record, $mode);
     }
 
-    public static function isValidCBU($cuit)
+    public static function isValidCBU($cbu)
     {
         //Tarea para la casa
         return true;
