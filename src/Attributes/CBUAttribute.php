@@ -7,9 +7,9 @@ use Sintattica\Atk\Core\Language;
 use Sintattica\Atk\Utils\IpUtils;
 
 /**
- * The CUIT  attribute provides a widget to edit CUIT's in atk9
+ * The CUIT  attribute provides a widget to edit CBU's in atk9
  *
- * @author Santiago Ottonello <sanotto@gmail.com>
+ * @author Federico Herrera <herrera3299@gmail.com>
  */
 class CBUAttribute extends Attribute
 {
@@ -80,8 +80,8 @@ class CBUAttribute extends Attribute
             $div1=substr($cbu,7,1);
             $div2=substr($cbu,21,1);
             
-            $digv_bloque1=$this->bloque1($banco_suc);
-            $digv_bloque2=$this->bloque2($nt_cuenta);
+            $digv_bloque1= self::bloque1($banco_suc);
+            $digv_bloque2= self::bloque2($nt_cuenta);
 	
             if($div1==$digv_bloque1 and $div2==$digv_bloque2){
             return true;
@@ -97,7 +97,7 @@ class CBUAttribute extends Attribute
      *
      * @return int digito verificador
      */
-        private function bloque1($banco_sucursal)
+        private static function bloque1($banco_sucursal)
         {
 	  $constantes[0]=7;
           $constantes[1]=1;
@@ -118,7 +118,7 @@ class CBUAttribute extends Attribute
 	
 	}
 	
-	$dv_bloque1=$this->prox_decena($sum_bloque);
+	$dv_bloque1= self::prox_decena($sum_bloque);
 	return $dv_bloque1;
         
         
@@ -131,7 +131,7 @@ class CBUAttribute extends Attribute
      *
      * @return int digito verificador
      */
-        private function bloque2($nt_cta)
+        private static function bloque2($nt_cta)
         {
 	   $const[0]=3;
 	   $const[1]=9;
@@ -158,7 +158,7 @@ class CBUAttribute extends Attribute
 	
            }
 	
-	   $dv_bloque2=$this->prox_decena($sum_bloque);
+	   $dv_bloque2= self::prox_decena($sum_bloque);
 	   return $dv_bloque2;
         }
 
@@ -169,7 +169,7 @@ class CBUAttribute extends Attribute
      *
      * @return int proxima decena
      */
-        private function prox_decena($bloque)
+        private static function prox_decena($bloque)
         {
             $decena=( intdiv(($bloque-1),10)+1)*10;
             $proxima_decena=$decena-$bloque;
