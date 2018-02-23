@@ -65,14 +65,119 @@ class CBUAttribute extends Attribute
         parent::validate($record, $mode);
     }
 
+    /**
+     * Obtiene si el cbu que se pasa como parametro es valido.
+     *
+     * @param $cbu Cbu.
+     *
+     * @return bool
+     */
     public static function isValidCBU($cbu)
     {
-        //Tarea para la casa
-        if ($cbu !=='1234567890123456789012'){
+            if ($cbu !=''){
+            $banco_suc=substr($cbu,0,7);
+            $nt_cuenta=substr($cbu,8,13);
+            $div1=substr($cbu,7,1);
+            $div2=substr($cbu,21,1);
+            
+            $digv_bloque1=$this->bloque1($banco_suc);
+            $digv_bloque2=$this->bloque2($nt_cuenta);
+	
+            if($div1==$digv_bloque1 and $div2==$digv_bloque2){
+            return true;
+            }
+          }
             return false;
+     }
+    
+     /**
+     * Calcula el primer digito verificador que corresponde a Banco,Sucursal.
+     *
+     * @param $banco_sucursal Banco,Suc.
+     *
+     * @return int digito verificador
+     */
+        private function bloque1($banco_sucursal)
+        {
+	  $constantes[0]=7;
+          $constantes[1]=1;
+	  $constantes[2]=3;
+	  $constantes[3]=9;
+	  $constantes[4]=7;
+	  $constantes[5]=1;
+	  $constantes[6]=3;
+	  
+          $sum_bloque=0;
+
+          for($i=0;$i<7;$i++){
+		
+          $digito=substr($banco_sucursal,$i,1);
+          $digito2=$digito*$constantes[$i];
+          $leng=strlen($digito2)-1;
+          $sum_bloque=$sum_bloque+(substr($digito2,$leng,1));
+	
+	}
+	
+	$dv_bloque1=$this->prox_decena($sum_bloque);
+	return $dv_bloque1;
+        
+        
+          }
+
+          /**
+     * Calcula el primer segundo verificador que corresponde a nt,Cuenta.
+     *
+     * @param $nt_cta nt, Numero de cuenta.
+     *
+     * @return int digito verificador
+     */
+        private function bloque2($nt_cta)
+        {
+	   $const[0]=3;
+	   $const[1]=9;
+      	   $const[2]=7;
+	   $const[3]=1;
+	   $const[4]=3;
+	   $const[5]=9;
+	   $const[6]=7;
+	   $const[7]=1;
+	   $const[8]=3;
+	   $const[9]=9;
+	   $const[10]=7;
+	   $const[11]=1;
+	   $const[12]=3;
+	
+	   $sum_bloque=0;
+
+           for($i=0;$i<13;$i++){
+		
+           $digito=substr($nt_cta,$i,1);
+	   $digito2=$digito*$const[$i];
+	   $leng=strlen($digito2)-1;
+	   $sum_bloque=$sum_bloque+(substr($digito2,$leng,1));
+	
+           }
+	
+	   $dv_bloque2=$this->prox_decena($sum_bloque);
+	   return $dv_bloque2;
         }
-        return true;
-    }
+
+             /**
+     * Obtiene la proxima decena de un numero entero.
+     *
+     * @param $bloque Numero obtenido en la sumatoria de bloques.
+     *
+     * @return int proxima decena
+     */
+        private function prox_decena($bloque)
+        {
+            $decena=( intdiv(($bloque-1),10)+1)*10;
+            $proxima_decena=$decena-$bloque;
+            return $proxima_decena;
+
+        }
+
+    
 
     /**
      * Converts the internal attribute value to one that is understood by the
